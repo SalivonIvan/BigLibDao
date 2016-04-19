@@ -8,13 +8,18 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import ua.biglib.salivon.dao.exceptions.NonexistentEntityException;
 import ua.biglib.salivon.entity.Book;
-
+@Service
 @Repository
 public class BookJpaController implements Serializable {
+
+    static Logger log = LogManager.getLogger(BookJpaController.class);
 
     @Autowired
     public BookJpaController(EntityManagerFactory emf) {
@@ -27,6 +32,7 @@ public class BookJpaController implements Serializable {
     }
 
     public void create(Book book) {
+        log.info("Create new Book");
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -37,6 +43,7 @@ public class BookJpaController implements Serializable {
             if (em != null) {
                 em.close();
             }
+            log.info("Title book - "+book.getTitle());
         }
     }
 
